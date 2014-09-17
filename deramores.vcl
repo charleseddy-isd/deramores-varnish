@@ -1,15 +1,15 @@
-include "backends/default.backend";
+include "/etc/varnish/deramores-varnish/backends/default.backend";
 
-include "acls/trusted.acl";
+include "/etc/varnish/deramores-varnish/acls/trusted.acl";
 
-include "subs/clean-ga-querystring.sub";
-include "subs/x-forwarded-ip.sub";
-include "subs/clean-req-url.sub";
-include "subs/normalize-gzip.sub";
-include "subs/purge-request.sub";
-include "subs/rfc-request.sub";
-include "subs/deny-trace.sub";
-include "subs/whitelist-cookies.sub";
+include "/etc/varnish/deramores-varnish/subs/clean-ga-querystring.sub";
+include "/etc/varnish/deramores-varnish/subs/x-forwarded-ip.sub";
+include "/etc/varnish/deramores-varnish/subs/clean-req-url.sub";
+include "/etc/varnish/deramores-varnish/subs/normalize-gzip.sub";
+include "/etc/varnish/deramores-varnish/subs/purge-request.sub";
+include "/etc/varnish/deramores-varnish/subs/rfc-request.sub";
+include "/etc/varnish/deramores-varnish/subs/deny-trace.sub";
+include "/etc/varnish/deramores-varnish/subs/whitelist-cookies.sub";
 
 sub vcl_recv {
   call deny_trace;
@@ -33,6 +33,11 @@ sub vcl_recv {
     /* We only deal with GET and HEAD by default */
     return (pass);
   }
+
+  # Don't cache the store switcher page
+   if (req.url ~ "___store=") {
+      return(pipe);
+    }
 
   # don't cache product images - too many, too big and should only be accessed once by CDN
   if (req.url ~ "^/media/catalog/product/") {
