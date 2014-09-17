@@ -1,0 +1,10 @@
+sub purge_request {
+  if (req.request == "PURGE") {
+    # Allow requests from trusted IPs to purge the cache
+    if (!client.ip ~ trusted) {
+       error 405 "Not allowed.";
+    }
+    ban("req.url ~ " + req.url);
+    error 200 "Ok"; # We don't go to backend
+  }
+}

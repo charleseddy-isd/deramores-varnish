@@ -1,0 +1,7 @@
+backend default {
+  .host = "127.0.0.1";
+  .port = "9080";
+  .first_byte_timeout = 300s;
+  .connect_timeout = 300s;
+  .between_bytes_timeout = 300s;
+}

@@ -1,0 +1,7 @@
+sub clean_ga_querystring {
+  if (req.url ~ "\?") {
+      # remove Google gclid parameters
+    set req.url = regsuball(req.url, "(gclid|utm_[a-z]+)=[^&]+&?", "");
+    set req.url = regsub(req.url, "(\?|&)$", "");
+  }
+}

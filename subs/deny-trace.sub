@@ -1,0 +1,5 @@
+sub deny_trace {
+  if (req.request == "TRACE") {
+    error 405 "Not allowed.";
+  }
+}

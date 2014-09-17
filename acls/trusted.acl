@@ -1,0 +1,6 @@
+acl trusted {
+  "127.0.0.1";
+  "127.0.1.1";
+  "192.168.56.1";
+  # Add other ips that are allowed to purge cache
+}
