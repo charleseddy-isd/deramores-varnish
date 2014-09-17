@@ -1,15 +1,15 @@
-include backends/default.backend;
+include "backends/default.backend";
 
-include acls/trusted.acl;
+include "acls/trusted.acl";
 
-include subs/clean-ga-querystring.sub;
-include subs/x-forwarded-ip.sub;
-include subs/clean-req-url.sub;
-include subs/normalize-gzip.sub;
-include subs/purge-request.sub;
-include subs/rfc-request.sub;
-include subs/deny-trace.sub;
-include subs/whitelist-cookies.sub;
+include "subs/clean-ga-querystring.sub";
+include "subs/x-forwarded-ip.sub";
+include "subs/clean-req-url.sub";
+include "subs/normalize-gzip.sub";
+include "subs/purge-request.sub";
+include "subs/rfc-request.sub";
+include "subs/deny-trace.sub";
+include "subs/whitelist-cookies.sub";
 
 sub vcl_recv {
   call deny_trace;
