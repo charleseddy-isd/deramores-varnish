@@ -2,7 +2,7 @@ sub whitelist_cookies {
   if (req.http.Cookie) {
     set req.http.Cookie = ";" + req.http.Cookie;
     set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
-    set req.http.Cookie = regsuball(req.http.Cookie, ";(store|frontend|emailSignup|charitySignup)=", "; \1=");
+    set req.http.Cookie = regsuball(req.http.Cookie, ";(store|CART|frontend|emailSignup|charitySignup)=", "; \1=");
     set req.http.Cookie = regsuball(req.http.Cookie, ";[^ ][^;]*", "");
     set req.http.Cookie = regsuball(req.http.Cookie, "^[; ]+|[; ]+$", "");
     if (req.http.Cookie == "") {

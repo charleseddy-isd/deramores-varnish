@@ -62,7 +62,7 @@ sub vcl_recv {
   }
 
   # Don't cache checkout/customer pages, product compare
-  if (req.url ~ "^/(index.php/)?(checkout|customer|catalog/product_compare|wishlist|downloadsignup|api)") {
+  if (req.url ~ "^/(index.php/)?(checkout|customer|catalog/product_compare|wishlist|downloadsignup|api|contacts)") {
     return(pass);
   }
 
