@@ -9,6 +9,8 @@ include "/etc/varnish/deramores-varnish/subs/normalize-gzip.sub";
 include "/etc/varnish/deramores-varnish/subs/purge-request.sub";
 include "/etc/varnish/deramores-varnish/subs/rfc-request.sub";
 include "/etc/varnish/deramores-varnish/subs/deny-trace.sub";
+include "/etc/varnish/deramores-varnish/subs/cacheable-cookies.sub";
+include "/etc/varnish/deramores-varnish/subs/recreate-cookies.sub";
 include "/etc/varnish/deramores-varnish/subs/whitelist-cookies.sub";
 
 sub vcl_recv {
@@ -71,7 +73,16 @@ sub vcl_recv {
     return (pass);
   }
 
-  call whitelist_cookies;
+  create_cookie_whitelist;
+  create_cookie_partition;
+
+  recreate_cookie;
+
+  if (req.http.X-Cookie-Whitelist) {
+    remove req.http.X-Cookie-Whitelist;
+    remove req.http.X-Cookie-Parition;
+    return(pass);
+  }
 
   set req.http.magicmarker = "1"; # Instruct varnish to remove cache headers received from backend
   return(lookup);
@@ -95,10 +106,11 @@ sub vcl_hash {
   } else {
     hash_data(server.ip);
   }
-  if (req.http.cookie ~ "store=") {
-    set req.http.X-Store = regsub(req.http.cookie, ".*store=([^;]+);.*", "\1");
-    hash_data(req.http.X-Store);
+  if (req.http.X-Cookie-Parition) {
+    set req.http.X-Store = regsub(req.http.X-Cookie-Parition, ".*store=([^;]+);.*", "\1");
+    hash_data(req.http.X-Cookie-Parition);
     remove req.http.X-Store;
+    remove req.http.X-Cookie-Parition;
   }
   return (hash);
 }

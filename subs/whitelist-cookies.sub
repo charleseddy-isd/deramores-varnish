@@ -1,12 +1,13 @@
-sub whitelist_cookies {
+sub create_cookie_whitelist {
+  set req.http.X-Cookie-Whitelist = '';
   if (req.http.Cookie) {
-    set req.http.Cookie = ";" + req.http.Cookie;
-    set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
-    set req.http.Cookie = regsuball(req.http.Cookie, ";(store|CART|frontend|emailSignup|charitySignup)=", "; \1=");
-    set req.http.Cookie = regsuball(req.http.Cookie, ";[^ ][^;]*", "");
-    set req.http.Cookie = regsuball(req.http.Cookie, "^[; ]+|[; ]+$", "");
-    if (req.http.Cookie == "") {
-       remove req.http.Cookie;
+    set req.http.X-Cookie-Whitelist = ";" + req.http.Cookie;
+    set req.http.X-Cookie-Whitelist = regsuball(req.http.X-Cookie-Whitelist, "; +", ";");
+    set req.http.X-Cookie-Whitelist = regsuball(req.http.X-Cookie-Whitelist, ";(CART|frontend|emailSignup|charitySignup)=", "; \1=");
+    set req.http.X-Cookie-Whitelist = regsuball(req.http.X-Cookie-Whitelist, ";[^ ][^;]*", "");
+    set req.http.X-Cookie-Whitelist = regsuball(req.http.X-Cookie-Whitelist, "^[; ]+|[; ]+$", "");
+    if (req.http.X-Cookie-Whitelist == "") {
+       remove req.http.X-Cookie-Whitelist;
     }
   }
 }

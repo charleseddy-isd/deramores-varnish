@@ -1,0 +1,13 @@
+sub create_cookie_partition {
+  set req.http.X-Cookie-Parition = '';
+  if (req.http.Cookie) {
+    set req.http.X-Cookie-Parition = ";" + req.http.Cookie;
+    set req.http.X-Cookie-Parition = regsuball(req.http.X-Cookie-Parition, "; +", ";");
+    set req.http.X-Cookie-Parition = regsuball(req.http.X-Cookie-Parition, ";(store)=", "; \1=");
+    set req.http.X-Cookie-Parition = regsuball(req.http.X-Cookie-Parition, ";[^ ][^;]*", "");
+    set req.http.X-Cookie-Parition = regsuball(req.http.X-Cookie-Parition, "^[; ]+|[; ]+$", "");
+    if (req.http.X-Cookie-Parition == "") {
+       remove req.http.X-Cookie-Parition;
+    }
+  }
+}

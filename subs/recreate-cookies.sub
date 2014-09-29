@@ -1,0 +1,9 @@
+sub recreate_cookies {
+  set req.http.cookie = "";
+  if (req.http.X-Cookie-Whitelist) {
+    set req.http.cookie = req.http.cookie + ";" + req.http.X-Cookie-Whitelist;
+  }
+  if (req.http.X-Cookie-Parition) {
+    set req.http.cookie = req.http.cookie + ";" + req.http.X-Cookie-Parition;
+  }
+}
