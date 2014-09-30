@@ -56,11 +56,15 @@ sub vcl_recv {
     return (lookup);
   }
 
+  if (req.url ~"^/phpmyadmin" ) {
+    return(pass);
+  }
+
   # Don't cache pages for Magento Admin
   # FIXME: change this rule if you use custom url in admin
   if (req.url ~ "^/(index.php/)?(drladmin|admin|wp)") {
     set req.http.connection = "close";
-    return(pipe);
+    return(pass);
   }
 
   # Don't cache checkout/customer pages, product compare
