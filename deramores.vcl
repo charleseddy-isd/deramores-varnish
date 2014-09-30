@@ -73,10 +73,10 @@ sub vcl_recv {
     return (pass);
   }
 
-  create_cookie_whitelist;
-  create_cookie_partition;
+  call create_cookie_whitelist;
+  call create_cookie_partition;
 
-  recreate_cookie;
+  call recreate_cookie;
 
   if (req.http.X-Cookie-Whitelist) {
     remove req.http.X-Cookie-Whitelist;
