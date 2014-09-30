@@ -76,7 +76,7 @@ sub vcl_recv {
   call create_cookie_whitelist;
   call create_cookie_partition;
 
-  call recreate_cookie;
+  call recreate_cookies;
 
   if (req.http.X-Cookie-Whitelist) {
     remove req.http.X-Cookie-Whitelist;
