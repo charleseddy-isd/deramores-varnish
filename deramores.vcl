@@ -92,8 +92,8 @@ sub vcl_pipe {
 }
 
 sub vcl_hash {
-  hash_data(req.http.X-Hash-URL);
-  remove req.http.X-Hash-URL;
+  hash_data(req.http.X-URL);
+  remove req.http.X-URL;
   if (req.http.host) {
     hash_data(req.http.host);
   } else {
