@@ -1,0 +1,10 @@
+include "/etc/varnish/deramores-varnish/includes/subs/clean-ga-querystring.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/x-forwarded-ip.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/clean-req-url.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/normalize-gzip.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/purge-request.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/rfc-request.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/deny-trace.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/cacheable-cookies.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/recreate-cookies.sub";
+include "/etc/varnish/deramores-varnish/includes/subs/whitelist-cookies.sub";

@@ -1,17 +1,6 @@
-include "/etc/varnish/deramores-varnish/backends/default.backend";
-
-include "/etc/varnish/deramores-varnish/acls/trusted.acl";
-
-include "/etc/varnish/deramores-varnish/subs/clean-ga-querystring.sub";
-include "/etc/varnish/deramores-varnish/subs/x-forwarded-ip.sub";
-include "/etc/varnish/deramores-varnish/subs/clean-req-url.sub";
-include "/etc/varnish/deramores-varnish/subs/normalize-gzip.sub";
-include "/etc/varnish/deramores-varnish/subs/purge-request.sub";
-include "/etc/varnish/deramores-varnish/subs/rfc-request.sub";
-include "/etc/varnish/deramores-varnish/subs/deny-trace.sub";
-include "/etc/varnish/deramores-varnish/subs/cacheable-cookies.sub";
-include "/etc/varnish/deramores-varnish/subs/recreate-cookies.sub";
-include "/etc/varnish/deramores-varnish/subs/whitelist-cookies.sub";
+include "/etc/varnish/deramores-varnish/includes/backends.vcl";
+include "/etc/varnish/deramores-varnish/includes/acls.vcl";
+include "/etc/varnish/deramores-varnish/includes/subs.vcl";
 
 sub vcl_recv {
   call deny_trace;
@@ -27,7 +16,6 @@ sub vcl_recv {
   }
 
   call purge_request;
-
   call rfc_request;
 
   # Cache only GET or HEAD requests. This makes sure POST requests are always passed.
@@ -104,7 +92,8 @@ sub vcl_pipe {
 }
 
 sub vcl_hash {
-  hash_data(req.url);
+  hash_data(req.http.X-Hash-URL);
+  remove req.http.X-Hash-URL;
   if (req.http.host) {
     hash_data(req.http.host);
   } else {

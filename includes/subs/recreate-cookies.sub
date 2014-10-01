@@ -6,4 +6,7 @@ sub recreate_cookies {
   if (req.http.X-Cookie-Parition) {
     set req.http.cookie = req.http.cookie + ";" + req.http.X-Cookie-Parition;
   }
+  if (req.http.cookie == "") {
+    remove req.http.cookie;
+  }
 }
