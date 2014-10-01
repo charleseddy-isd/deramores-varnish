@@ -1,0 +1,12 @@
+sub clean_req_url {
+  set req.http.X-Url = req.url;
+  ### clean out requests sent via curls -X mode and LWP
+  if (req.http.X-Url ~ "^http://") {
+      set req.http.X-Url = regsub(req.http.X-Url, "http://[^/]*", "");
+  }
+
+  ### remove double // in urls,
+  ### /foo and /foo/ are the same url
+  set req.http.X-Url = regsuball( req.http.X-Url, "//", "/"      );
+  set req.http.X-Url = regsub( req.http.X-Url, "/([?])?$", "\1"  );
+}
